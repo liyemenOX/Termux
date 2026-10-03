@@ -1,0 +1,18 @@
+FILE MANAGEMENT SYSTEM
+
+
+|-> write
+    |->FileWriter(overwrite method)
+    |->FileWriter(non-overwrite method,used the booleans)
+
+|-> read 
+    |->FileReader
+    |->FileInputStream
+
+|-> update 
+|-> delete
+|-> exception handling with e.getMessage() and e.printStackTrace()
+
+feat: to add
+|-> encryption decryption
+
