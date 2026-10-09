@@ -15,4 +15,5 @@ FILE MANAGEMENT SYSTEM
 
 feat: to add
 |-> encryption decryption
-
+|-> add an abstract class and inherit the abstract methods in the child classes
+|-> in abstract methods do add the error handling
