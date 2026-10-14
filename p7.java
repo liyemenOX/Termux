@@ -88,14 +88,33 @@
                             System.out.println();
                             }
 
+                            case 4 ->
+                            {
+                                try
+                                {
+                                    if(file.delete()){
+                                    System.out.println("the file has been deleted");}
+                                    else
+                                    {
+                                        throw new IOException();
+                                    }
+                                }
+                                catch(IOException e)
+                                {
+                                    System.out.println("an io error occured during the deletion " + e.getMessage() );
+                                }
+                            }
+
+
                             case 5 ->
                             {
                                 //use this to write new contents without overwriting
                                 //also write the file type at the last of file name at the time of execution
                                 
                                 FileInputStream fis = new FileInputStream(addr);
+                                byte[] buffer = new byte[4096];
                                 int ch;
-                                while((ch = fis.read()) != -1)
+                                while((ch = fis.read(buffer)) != -1)
                                 {
                                     System.out.println((char)ch);
                                 }
