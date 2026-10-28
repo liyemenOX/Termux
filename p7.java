@@ -1,6 +1,5 @@
     //file writer
     import java.io.*;
-    import java.util.*;
 
     class FileNotAvailable extends Exception
     {
@@ -10,20 +9,51 @@
         }
     }
 
-    public class p7{
+    public class p7 extends Thread{
+
+         static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+         static String addr;
+         static String addr1;
+         static FileInputStream fis;
+        static FileOutputStream fos;
+
+         synchronized public void read() throws IOException
+                    {
+                        System.out.println("enter address 2: ");
+                            addr1 = br.readLine();
+                        fis = new FileInputStream(addr);  
+                    }
+        
+        synchronized public void write(){
+                            try
+                                {
+                                    FileOutputStream fos = new FileOutputStream(addr1);
+
+                                    fis.transferTo(fos);
+
+                                    fis.close();
+                                    fos.close();
+                                    System.out.println("copy finished");
+                                }
+                            catch(IOException e)
+                            {
+                                System.out.println("error occured");
+                            }
+                        }
+        
         public static void main(String[] args) throws IOException
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            Scanner sc = new Scanner(System.in);
 
             while(true)
             {
-                System.out.println("enter 1 for read operation");
-                System.out.println("enter 2 for write(only overwrite) operation");
-                System.out.println("enter 3 for write(no overwrite) operation");
-                System.out.println("enter 4 for delete operation");
-                System.out.println("enter 5 for reading .png, .jpg, .mp3, .mp4, .pdf, .exe");
-                System.out.println("enter 6 for copying the data: ");
+                System.out.println("enter 1 for file creation operation");
+                System.out.println("enter 2 for read operation");
+                System.out.println("enter 3 for write(only overwrite) operation");
+                System.out.println("enter 4 for write(no overwrite) operation");
+                System.out.println("enter 5 for delete operation");
+                System.out.println("enter 6 for reading .png, .jpg, .mp3, .mp4, .pdf, .exe");
+                System.out.println("enter 7 for copying the data: ");
                 System.out.println("Press any other key to terminate. ");
 
                 int x = Integer.parseInt(br.readLine());
@@ -38,17 +68,32 @@
                 String addr = br.readLine();
 
                 try{
-        
                     File file = new File(addr);
-
+                    
+                    if(x==1)
+                    {
+                        if(file.createNewFile())
+                            {
+                                System.out.printf("file has been created "+file.getName());
+                            }
+                        else
+                            {
+                                System.out.printf("file already exists");
+                            }
+                            System.out.println("\n");
+                        continue;       
+                    }
                     if(!file.exists())
                     {
                         throw new FileNotAvailable("the file is not present ");
                     }
+
                     else{
                         switch (x)
                         {
-                            case 1  ->
+    
+
+                            case 2  ->
                             {//use this to read the entire file at once
                             
                             FileReader fr = new FileReader(addr);
@@ -63,7 +108,7 @@
                             }
                             
 
-                            case 2 ->
+                            case 3 ->
                             {
                                 //use this to write the entire file at once
 
@@ -73,12 +118,11 @@
                                 FileWriter fw = new FileWriter(addr);
                                 fw.write(data);
                                 fw.close();
-                                
-                                
+
                                 
                             }
 
-                            case 3 ->
+                            case 4 ->
                             {
                                 //use this to write new contents without overwriting
                 
@@ -92,7 +136,7 @@
                             System.out.println();
                             }
 
-                            case 4 ->
+                            case 5 ->
                             {
                                 try
                                 {
@@ -110,7 +154,7 @@
                             }
 
 
-                            case 5 ->
+                            case 6 ->
                             {
                                 //use this to write new contents without overwriting
                                 //also write the file type at the last of file name at the time of execution
@@ -127,18 +171,23 @@
                             
                             }
 
-                            case 6 ->
+                            case 7 ->
                             {
-                                System.out.println("enter address 2: ");
-                                String addr1 = br.readLine();
+    
+                                p7 p = new p7();
+                                Thread t1 = new Thread(() ->{
+                                    try
+                                    {
+                                        p.read();
+                                        p.write();
+                                    }
+                                    catch(IOException e)
+                                    {
+                                        System.out.println("the file is not present");
+                                    }
+                                });
+                                t1.start();
 
-                                FileInputStream fis = new FileInputStream(addr);
-                                FileOutputStream fos = new FileOutputStream(addr1);
-
-                                fis.transferTo(fos);
-
-                                fis.close();
-                                fos.close();
                             }
                             
                             default ->
@@ -160,7 +209,6 @@
                 }
 
             }
-            
 
         }
     }
