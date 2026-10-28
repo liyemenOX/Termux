@@ -15,7 +15,7 @@
          static String addr;
          static String addr1;
          static FileInputStream fis;
-        static FileOutputStream fos;
+         static FileOutputStream fos;
 
          synchronized public void read() throws IOException
                     {
@@ -27,7 +27,7 @@
         synchronized public void write(){
                             try
                                 {
-                                    FileOutputStream fos = new FileOutputStream(addr1);
+                                    fos = new FileOutputStream(addr1);
 
                                     fis.transferTo(fos);
 
@@ -43,7 +43,6 @@
         
         public static void main(String[] args) throws IOException
         {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
             while(true)
             {
@@ -58,14 +57,14 @@
 
                 int x = Integer.parseInt(br.readLine());
 
-                if (x < 1 || x > 6) 
+                if (x < 1 || x > 7) 
                 {
                 System.out.println("Terminating Program!!\n");
                 System.exit(0);    
-            }
+                }
           
                 System.out.println("enter the address: ");
-                String addr = br.readLine();
+                addr = br.readLine();
 
                 try{
                     File file = new File(addr);
@@ -175,16 +174,13 @@
                             {
     
                                 p7 p = new p7();
+                                p.read();
+
                                 Thread t1 = new Thread(() ->{
-                                    try
-                                    {
-                                        p.read();
-                                        p.write();
-                                    }
-                                    catch(IOException e)
-                                    {
-                                        System.out.println("the file is not present");
-                                    }
+                                    
+                                     p.write();
+                                    
+                                    
                                 });
                                 t1.start();
 
