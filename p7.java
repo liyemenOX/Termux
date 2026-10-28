@@ -1,11 +1,6 @@
     //file writer
-    import java.io.BufferedReader;
-    import java.io.File;
-    import java.io.FileInputStream;
-    import java.io.FileReader;
-    import java.io.FileWriter;
-    import java.io.IOException;
-    import java.io.InputStreamReader;
+    import java.io.*;
+    import java.util.*;
 
     class FileNotAvailable extends Exception
     {
@@ -19,6 +14,7 @@
         public static void main(String[] args) throws IOException
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            Scanner sc = new Scanner(System.in);
 
             while(true)
             {
@@ -27,15 +23,24 @@
                 System.out.println("enter 3 for write(no overwrite) operation");
                 System.out.println("enter 4 for delete operation");
                 System.out.println("enter 5 for reading .png, .jpg, .mp3, .mp4, .pdf, .exe");
-                
+                System.out.println("enter 6 for copying the data: ");
+                System.out.println("Press any other key to terminate. ");
+
                 int x = Integer.parseInt(br.readLine());
 
+                if (x < 1 || x > 6) 
+                {
+                System.out.println("Terminating Program!!\n");
+                System.exit(0);    
+            }
+          
                 System.out.println("enter the address: ");
                 String addr = br.readLine();
 
                 try{
         
                     File file = new File(addr);
+
                     if(!file.exists())
                     {
                         throw new FileNotAvailable("the file is not present ");
@@ -52,10 +57,9 @@
                                 {
                                     System.out.print((char)ch);
                                 }
-                                System.out.println();
+                                System.out.println("\n");
                                 fr.close();
 
-                            
                             }
                             
 
@@ -123,9 +127,23 @@
                             
                             }
 
+                            case 6 ->
+                            {
+                                System.out.println("enter address 2: ");
+                                String addr1 = br.readLine();
 
+                                FileInputStream fis = new FileInputStream(addr);
+                                FileOutputStream fos = new FileOutputStream(addr1);
+
+                                fis.transferTo(fos);
+
+                                fis.close();
+                                fos.close();
+                            }
+                            
                             default ->
                             {
+                                System.out.print("invalid");
                                 System.exit(0);
                             }
                         }
@@ -140,6 +158,7 @@
                 {
                     System.out.println("an ioexception has occured ");
                 }
+
             }
             
 
